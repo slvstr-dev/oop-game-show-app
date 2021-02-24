@@ -6,7 +6,7 @@ class Game {
     }
 
     /**
-     * Create phrases for use in game
+     * Create possible game phrases
      * @return {array} An array of possible phrases for the game
      */
     createPhrases() {
@@ -31,5 +31,15 @@ class Game {
         const randomNumber = Math.floor(Math.random() * this.phrases.length);
 
         return this.phrases[randomNumber];
+    }
+
+    /**
+     * Initialize game by getting & displaying a random phrase
+     */
+    startGame() {
+        document.getElementById("overlay").style.display = "none";
+
+        this.activePhrase = this.getRandomPhrase();
+        this.activePhrase.addPhraseToDisplay();
     }
 }
