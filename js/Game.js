@@ -42,4 +42,52 @@ class Game {
         this.activePhrase = this.getRandomPhrase();
         this.activePhrase.addPhraseToDisplay();
     }
+
+    /**
+     * Checks for winning move
+     * @return {boolean} True if game has been won, false if game wasn't won
+     */
+    checkForWin() {
+        if (document.querySelectorAll(".hide").length === 0) {
+            this.gameOver(true);
+        }
+    }
+
+    /**
+     * Increases the value of the missed property
+     * Removes a life from the scoreboard
+     * Checks if player has remaining lives and ends game if player is out
+     */
+    removeLife() {
+        const lives = document.querySelectorAll(
+            "img[src='images/liveHeart.png']"
+        );
+
+        lives[lives.length - 1].src = "images/lostHeart.png";
+
+        this.missed++;
+
+        if (this.missed === 5) {
+            this.gameOver(false);
+        }
+    }
+
+    /**
+     * Displays game over message
+     * @param {boolean} gameWon - Whether or not the user won the game
+     */
+    gameOver(gameWon) {
+        const overlay = document.getElementById("overlay");
+        const h1 = document.getElementById("game-over-message");
+
+        if (gameWon) {
+            h1.textContent = "Win";
+            overlay.classList = "win";
+        } else {
+            h1.textContent = "Lose";
+            overlay.classList = "lose";
+        }
+
+        document.getElementById("overlay").style.display = "block";
+    }
 }
