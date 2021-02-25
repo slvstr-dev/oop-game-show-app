@@ -82,13 +82,13 @@ class Game {
 
         if (gameWon) {
             h1.textContent = "Win";
-            overlay.classList = "win";
+            overlay.classList.add("win");
         } else {
             h1.textContent = "Lose";
-            overlay.classList = "lose";
+            overlay.classList.add("lose");
         }
 
-        document.getElementById("overlay").style.display = "block";
+        document.getElementById("overlay").style.display = "flex";
     }
 
     /**
@@ -96,6 +96,15 @@ class Game {
      * @param (HTMLButtonElement) button - The clicked button element
      */
     handleInteraction(button) {
-        console.log(button);
+        button.setAttribute("disabled", true);
+
+        if (this.activePhrase.checkLetter(button.innerText)) {
+            button.classList.add("chosen");
+            this.activePhrase.showMatchedLetter(button.innerText);
+            this.checkForWin();
+        } else {
+            button.classList.add("wrong");
+            this.removeLife();
+        }
     }
 }

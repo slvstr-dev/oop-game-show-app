@@ -2,7 +2,7 @@ const startButton = document.getElementById("btn__reset");
 const keyboard = document.getElementById("qwerty");
 let game;
 
-startButton.addEventListener("click", (event) => {
+startButton.addEventListener("click", () => {
     game = new Game();
     game.startGame();
 });
