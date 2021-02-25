@@ -1,8 +1,8 @@
 class Game {
     constructor() {
-        this.missed = 0;
         this.phrases = this.createPhrases();
         this.activePhrase = null;
+        this.missed = 0;
     }
 
     /**
@@ -24,7 +24,7 @@ class Game {
     }
 
     /**
-     * Get random phrase from phrases property
+     * Get a random phrase from the phrases property
      * @return {Object} Random phrase object for use in game
      */
     getRandomPhrase() {
@@ -34,47 +34,34 @@ class Game {
     }
 
     /**
-     * Initialize game by getting & displaying a random phrase
-     */
-    startGame() {
-        document.getElementById("overlay").style.display = "none";
-
-        this.activePhrase = this.getRandomPhrase();
-        this.activePhrase.addPhraseToDisplay();
-    }
-
-    /**
-     * Checks for winning move
+     * Check if all letters from phrase have been guessed
      * @return {boolean} True if game has been won, false if game wasn't won
      */
     checkForWin() {
-        if (document.querySelectorAll(".hide").length === 0) {
+        if (document.querySelectorAll(".hide").length <= 0) {
             this.gameOver(true);
         }
     }
 
     /**
-     * Increases the value of the missed property
-     * Removes a life from the scoreboard
-     * Checks if player has remaining lives and ends game if player is out
+     * 1. Remove a life from the scoreboard
+     * 2. Increase the value of the missed property
+     * 3. Check if the game has been lost
      */
     removeLife() {
-        const lives = document.querySelectorAll(
-            "img[src='images/liveHeart.png']"
-        );
-
-        lives[lives.length - 1].src = "images/lostHeart.png";
+        const lives = document.querySelectorAll(".tries img");
+        lives[this.missed].src = "images/lostHeart.png";
 
         this.missed++;
 
-        if (this.missed === 5) {
+        if (this.missed >= 5) {
             this.gameOver(false);
         }
     }
 
     /**
-     * Displays game over message
-     * @param {boolean} gameWon - Whether or not the user won the game
+     * Display a conditional game over message
+     * @param {boolean} gameWon - Whether or not the game has been won
      */
     gameOver(gameWon) {
         const overlay = document.getElementById("overlay");
@@ -92,11 +79,11 @@ class Game {
     }
 
     /**
-     * Handles onscreen keyboard button clicks
-     * @param (HTMLButtonElement) button - The clicked button element
+     * Handle interactions with the keyboard
+     * @param {string} button - The clicked HTML button element
      */
     handleInteraction(button) {
-        button.setAttribute("disabled", true);
+        button.disabled = false;
 
         if (this.activePhrase.checkLetter(button.innerText)) {
             button.classList.add("chosen");
@@ -106,5 +93,30 @@ class Game {
             button.classList.add("wrong");
             this.removeLife();
         }
+    }
+
+    /**
+     * Reset game to default state
+     */
+    resetGame() {
+        document.querySelectorAll(".key").forEach((key) => {
+            key.disabled = false;
+            key.classList.remove("chosen", "wrong");
+        });
+        document
+            .querySelectorAll(".tries img")
+            .forEach((heart) => (heart.src = "images/liveHeart.png"));
+        document.getElementById("overlay").classList.remove("win", "lose");
+    }
+
+    /**
+     * 1. Initialize game by getting & displaying a random phrase
+     * 2. Remove start new game overlay
+     */
+    startGame() {
+        this.activePhrase = this.getRandomPhrase();
+        this.activePhrase.addPhraseToDisplay();
+
+        document.getElementById("overlay").style.display = "none";
     }
 }
