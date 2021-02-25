@@ -90,4 +90,12 @@ class Game {
 
         document.getElementById("overlay").style.display = "block";
     }
+
+    /**
+     * Handles onscreen keyboard button clicks
+     * @param (HTMLButtonElement) button - The clicked button element
+     */
+    handleInteraction(button) {
+        console.log(button);
+    }
 }
