@@ -1,6 +1,6 @@
 const startButton = document.getElementById("btn__reset");
 const keyboard = document.getElementById("qwerty");
-const keys = document.getElementsByClassName("key");
+const keys = document.querySelectorAll(".key");
 let game;
 
 /**
@@ -10,13 +10,14 @@ startButton.addEventListener("click", () => {
     game = new Game();
 
     game.resetGame();
+
     game.startGame();
 
     /**
      * Handle physical keyboard guesses
      */
     document.addEventListener("keydown", (event) => {
-        Array.from(keys).forEach((key) => {
+        keys.forEach((key) => {
             if (!key.disabled && key.innerText === event.key) {
                 game.handleInteraction(key);
             }

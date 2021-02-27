@@ -46,13 +46,17 @@ class Game {
     /**
      * 1. Remove a life from the scoreboard
      * 2. Increase the value of the missed property
-     * 3. Check if the game has been lost
+     * 3. Adjust background color
+     * 4. Check if the game has been lost
      */
     removeLife() {
+        const background = document.querySelector("[data-missed]");
         const lives = document.querySelectorAll(".tries img");
-        lives[this.missed].src = "images/lostHeart.png";
 
+        lives[this.missed].src = "images/lostHeart.png";
         this.missed++;
+
+        background.dataset.missed = this.missed;
 
         if (this.missed >= 5) {
             this.gameOver(false);
@@ -66,12 +70,24 @@ class Game {
     gameOver(gameWon) {
         const overlay = document.getElementById("overlay");
         const h1 = document.getElementById("game-over-message");
+        const answer = document.getElementById("game-over-answer");
 
         if (gameWon) {
-            h1.textContent = "Win";
+            const livesLeft =
+                this.missed <= 4
+                    ? `${5 - this.missed} lives left`
+                    : "1 live left";
+
+            h1.textContent = "Great, you won!";
+
+            answer.textContent = `With ${livesLeft} you guessed: '${this.activePhrase.phrase}'.`;
+
             overlay.classList.add("win");
         } else {
-            h1.textContent = "Lose";
+            h1.textContent = "Game over!";
+
+            answer.textContent = `The correct phrase was: '${this.activePhrase.phrase}'.`;
+
             overlay.classList.add("lose");
         }
 
@@ -91,10 +107,13 @@ class Game {
 
         if (this.activePhrase.checkLetter(button.innerText)) {
             button.classList.add("chosen");
+
             this.activePhrase.showMatchedLetter(button.innerText);
+
             this.checkForWin();
         } else {
             button.classList.add("wrong");
+
             this.removeLife();
         }
     }
@@ -107,9 +126,11 @@ class Game {
             key.disabled = false;
             key.classList.remove("chosen", "wrong");
         });
+
         document
             .querySelectorAll(".tries img")
             .forEach((heart) => (heart.src = "images/liveHeart.png"));
+
         document.getElementById("overlay").classList.remove("win", "lose");
     }
 
@@ -119,6 +140,7 @@ class Game {
      */
     startGame() {
         this.activePhrase = this.getRandomPhrase();
+
         this.activePhrase.addPhraseToDisplay();
 
         document.getElementById("overlay").style.display = "none";

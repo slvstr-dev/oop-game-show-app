@@ -37,6 +37,7 @@ class Phrase {
         const matchedLetters = document.querySelectorAll(`.${letter}`);
         matchedLetters.forEach((matchedLetter) => {
             matchedLetter.classList.add("show");
+
             matchedLetter.classList.remove("hide");
         });
     }
