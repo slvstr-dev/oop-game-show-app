@@ -1,16 +1,6 @@
 class Game {
     constructor() {
-        this.phrases = this.createPhrases();
-        this.activePhrase = null;
-        this.missed = 0;
-    }
-
-    /**
-     * Create possible game phrases
-     * @return {array} An array of possible phrases for the game
-     */
-    createPhrases() {
-        return [
+        this.phrases = [
             new Phrase("You must be the change you wish to see in the world"),
             new Phrase("Life is a divine adventure"),
             new Phrase("He who has a why to live can bear almost any how"),
@@ -21,6 +11,8 @@ class Game {
                 "Failure is the condiment that gives success its flavor"
             ),
         ];
+        this.activePhrase = null;
+        this.missed = 0;
     }
 
     /**
